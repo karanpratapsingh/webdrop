@@ -18,11 +18,7 @@ module.exports = {
     node: true
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react/recommended'],
   rules: {
     // JS/TS RULES
     quotes: ['error', 'single'],
