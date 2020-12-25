@@ -35,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "copy:types": "yarn copyfiles -f ../backend/types/*.ts ./src/generated/types",
+    "copy:types": "yarn copyfiles -f ../backend/src/types/*.ts ./src/generated/types",
     "postinstall": "yarn copy:types"
   },
   "browserslist": {
