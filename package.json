@@ -1,0 +1,42 @@
+{
+  "name": "webdrop",
+  "version": "0.1.0",
+  "author": {
+    "name": "Karan Pratap Singh",
+    "email": "contact@karanpratapsingh.com",
+    "url": "https://karanpratapsingh.com"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karanpratapsingh/webdrop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karanpratapsingh/webdrop/issues"
+  },
+  "scripts": {
+    "start:web": "cd web && yarn start",
+    "start:backend": "cd backend && yarn start",
+    "build:web": "cd web && yarn build",
+    "build:backend": "cd backend && yarn build",
+    "lint": "yarn eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "yarn prettier --write . && yarn lint --fix",
+    "postinstall": "cd web && yarn && cd ../backend && yarn && cd .."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.4.0",
+    "@typescript-eslint/parser": "4.4.0",
+    "eslint": "7.16.0",
+    "eslint-plugin-prettier": "3.3.0",
+    "eslint-plugin-react": "7.21.5",
+    "husky": "4.3.6",
+    "prettier": "2.2.1",
+    "typescript": "4.0.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn lint:fix"
+    }
+  }
+}
