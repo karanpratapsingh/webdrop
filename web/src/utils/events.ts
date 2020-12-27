@@ -11,9 +11,13 @@ export class Events {
   }
 
   static on(type: string, callback: EventCallback): void {
-    return window.addEventListener(type, (event: Event): void => {
-      const { detail: data } = event as CustomEvent;
-      callback(data);
-    }, false);
+    return window.addEventListener(
+      type,
+      (event: Event): void => {
+        const { detail: data } = event as CustomEvent;
+        callback(data);
+      },
+      false
+    );
   }
 }
