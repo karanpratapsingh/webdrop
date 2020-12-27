@@ -1,7 +1,7 @@
 import { PeerInfo } from './peer.types';
 
-export type JoinedPayload = {
-  type: PayloadType.JOINED;
+export type CurrentPeerPayload = {
+  type: PayloadType.CURRENT_PEER;
   peer: PeerInfo;
 };
 
@@ -10,9 +10,21 @@ export type AllPeersPayload = {
   peers: PeerInfo[];
 };
 
-export type Payload = JoinedPayload | AllPeersPayload;
+export type PeerJoinedPayload = {
+  type: PayloadType.PEER_JOINED;
+  peer: PeerInfo;
+};
+
+export type PeerLeftPayload = {
+  type: PayloadType.PEER_LEFT;
+  peer: PeerInfo;
+};
+
+export type Payload = CurrentPeerPayload | AllPeersPayload |PeerJoinedPayload | PeerLeftPayload;
 
 export enum PayloadType {
-  JOINED = 'peer-joined',
-  ALL_PEERS = 'all-peers'
+  CURRENT_PEER = 'current-peer',
+  ALL_PEERS = 'all-peers',
+  PEER_JOINED = 'peer-joined',
+  PEER_LEFT = 'peer-left'
 }
