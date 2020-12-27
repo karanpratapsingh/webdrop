@@ -1,31 +1,23 @@
-import WebSocket from 'ws';
-import http from 'http';
+import io from 'socket.io';
+import { animals, colors, uniqueNamesGenerator, Config } from 'unique-names-generator';
 import { v4 as uuid } from 'uuid';
 import { ID, IP, PeerInfo } from './types';
-import { uniqueNamesGenerator, colors, animals } from 'unique-names-generator';
 
 export default class Peer {
   id: ID;
   ip: IP;
   name: string;
-  socket: WebSocket;
+  socket: io.Socket;
 
-  constructor(socket: WebSocket, request: http.IncomingMessage) {
+  constructor(socket: io.Socket) {
     this.socket = socket;
     this.id = uuid();
-    this.ip = this.getIP(request);
+    this.ip = this.getIP(socket);
     this.name = this.generateName();
   }
 
-  private getIP(request: http.IncomingMessage): IP {
-    let ip: IP;
-    const forwardedHeader = request.headers['x-forwarded-for'] as string;
-    if (forwardedHeader) {
-      ip = forwardedHeader.split(/\s*,\s*/)[0];
-    } else {
-      ip = request.connection.remoteAddress ?? '';
-    }
-    // Detect and set localhost
+  private getIP(socket: io.Socket): IP {
+    let ip = socket.handshake.address;
     if (['::1', '::ffff:127.0.0.1'].includes(ip)) {
       ip = '127.0.0.1';
     }
@@ -39,6 +31,11 @@ export default class Peer {
   };
 
   private generateName = (): string => {
-    return uniqueNamesGenerator({ dictionaries: [colors, animals] });
+    const config: Config = {
+      dictionaries: [colors, animals],
+      separator: ' ',
+      style: 'capital'
+    };
+    return uniqueNamesGenerator(config);
   };
 }

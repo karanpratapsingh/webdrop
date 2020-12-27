@@ -1,10 +1,12 @@
 import './process';
-import WebdropServer from './server';
-import WebSocket from 'ws';
+import WebdropServer, { ServerOptions } from './server';
 
-const options: WebSocket.ServerOptions = {
-  port: 4000
+const options: ServerOptions = {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true
+  }
 };
 
-const server = new WebdropServer(options);
+const server = new WebdropServer(4000, options);
 server.init();

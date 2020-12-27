@@ -1,52 +1,60 @@
 import http from 'http';
-import WebSocket from 'ws';
+import io from 'socket.io';
 import Peer from './peer';
 import {
   IP,
-  PeerInfo,
-  PayloadType,
+  CurrentPeerPayloadData,
   Payload,
-  AllPeersPayload,
-  PeerJoinedPayload,
-  PeerLeftPayload,
-  CurrentPeerPayload
+  PayloadType,
+  AllPeersPayloadData,
+  PeerInfo,
+  PeerJoinedPayloadData,
+  PeerLeftPayloadData,
+  Payloads
 } from './types';
+
+export type ServerOptions = Partial<io.ServerOptions>;
 
 type Rooms = Map<IP, Map<IP, Peer>>;
 
 export default class WebdropServer {
-  options: WebSocket.ServerOptions;
-  wss!: WebSocket.Server;
-  rooms!: Rooms;
+  port: number;
+  options: ServerOptions;
+  io!: io.Server;
+  rooms: Rooms;
 
-  constructor(options: WebSocket.ServerOptions) {
+  constructor(port: number, options: ServerOptions) {
+    this.port = port;
     this.options = options;
+    this.rooms = new Map() as Rooms;
   }
 
   public init = (): void => {
-    this.wss = new WebSocket.Server(this.options);
-    this.wss.on('connection', this.onConnection);
-    this.rooms = new Map() as Rooms;
-    console.log('Server is running on port', this.options.port);
+    const server: http.Server = http.createServer();
+    this.io = new io.Server(server, this.options);
+    this.io.on('connection', this.onConnection);
+    server.listen(this.port);
+    console.log('Server is running on port', this.port);
   };
 
-  private onConnection = (socket: WebSocket, request: http.IncomingMessage): void => {
-    const peer: Peer = new Peer(socket, request);
-    const currentPeerPayload: CurrentPeerPayload = {
-      type: PayloadType.CURRENT_PEER,
-      peer: peer.getInfo()
-    };
-    this.send(peer, currentPeerPayload);
-    peer.socket.addListener('close', () => {
+  private onConnection = (socket: io.Socket): void => {
+    const peer: Peer = new Peer(socket);
+    peer.socket.on('disconnect', () => {
       this.leaveRoom(peer);
     });
     this.joinRoom(peer);
   };
 
   private joinRoom = (newPeer: Peer): void => {
-    // if room doesn't exist, create it
+    // Send current peer it's details
+    const currentPeerPayload: Payload<CurrentPeerPayloadData> = {
+      type: PayloadType.CURRENT_PEER,
+      data: newPeer.getInfo()
+    };
+    this.send(newPeer, currentPeerPayload);
+
+    // If room doesn't exist, create it
     if (!this.rooms.has(newPeer.ip)) {
-      console.log('Created a room');
       this.rooms.set(newPeer.ip, new Map());
     }
 
@@ -55,9 +63,9 @@ export default class WebdropServer {
     if (peers) {
       // Notify all other peers about new peer
       peers.forEach((peer: Peer) => {
-        const peerJoinedPayload: PeerJoinedPayload = {
+        const peerJoinedPayload: Payload<PeerJoinedPayloadData> = {
           type: PayloadType.PEER_JOINED,
-          peer: newPeer.getInfo()
+          data: newPeer.getInfo()
         };
         this.send(peer, peerJoinedPayload);
       });
@@ -68,9 +76,9 @@ export default class WebdropServer {
         otherPeers.push(otherPeer.getInfo());
       });
 
-      const payload: AllPeersPayload = {
+      const payload: Payload<AllPeersPayloadData> = {
         type: PayloadType.ALL_PEERS,
-        peers: otherPeers
+        data: otherPeers
       };
 
       this.send(newPeer, payload);
@@ -83,19 +91,18 @@ export default class WebdropServer {
     const currentPeerRoom = this.rooms.get(peer.ip);
     if (currentPeerRoom) {
       currentPeerRoom.delete(peer.id);
-      const peerLeftPayload: PeerLeftPayload = {
+      const peerLeftPayload: Payload<PeerLeftPayloadData> = {
         type: PayloadType.PEER_LEFT,
-        peer: peer.getInfo()
+        data: peer.getInfo()
       };
       currentPeerRoom.forEach(peer => {
         this.send(peer, peerLeftPayload);
       });
-      peer.socket.terminate();
+      peer.socket.disconnect();
     }
   };
 
-  private send = (peer: Peer, payload: Payload): void => {
-    console.log(`[EVENT]: ${payload.type} => ${JSON.stringify(payload, null, 2)}`);
-    peer.socket.send(JSON.stringify(payload));
+  private send = (peer: Peer, payload: Payloads): void => {
+    peer.socket.emit(payload.type, payload.data);
   };
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { PayloadType, PeerInfo } from '../../generated/types';
-import { EventData, Events } from '../../utils';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { memo, useEffect, useState } from 'react';
+import { AllPeersPayloadData, PayloadType, PeerInfo, PeerJoinedPayloadData, PeerLeftPayloadData } from '../../generated/types';
+import { Connection } from '../../utils';
 
 interface PeersProps {
   currentPeer?: PeerInfo;
@@ -11,26 +12,23 @@ function Peers(props: PeersProps): React.ReactElement {
   const [peers, setPeers] = useState<PeerInfo[]>([]);
 
   useEffect(() => {
-    Events.on(PayloadType.ALL_PEERS, onAllPeers);
-    Events.on(PayloadType.PEER_JOINED, onPeerJoined);
-    Events.on(PayloadType.PEER_LEFT, onPeerLeft);
+    Connection.on(PayloadType.ALL_PEERS, onAllPeers);
+    Connection.on(PayloadType.PEER_JOINED, onPeerJoined);
+    Connection.on(PayloadType.PEER_LEFT, onPeerLeft);
   }, []);
 
-  const onAllPeers = (data: EventData): void => {
-    const peers = data as PeerInfo[];
+  const onAllPeers = (peers: AllPeersPayloadData): void => {
     setPeers(peers);
   };
 
-  const onPeerJoined = (data: EventData): void => {
-    const peer = data as PeerInfo;
-    const updatedPeer = peers;
+  const onPeerJoined = (peer: PeerJoinedPayloadData): void => {
+    const updatedPeer = [...peers];
     updatedPeer.push(peer);
     setPeers(updatedPeer);
   };
 
-  const onPeerLeft = (data: EventData): void => {
-    const peer = data as PeerInfo;
-    const updatedPeer = peers.filter(({ id }) => id !== peer.id || id !== currentPeer?.id);
+  const onPeerLeft = (peer: PeerLeftPayloadData): void => {
+    const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
     setPeers(updatedPeer);
   };
 
@@ -51,4 +49,4 @@ function Peers(props: PeersProps): React.ReactElement {
   );
 }
 
-export default Peers;
+export default memo(Peers);

@@ -1,41 +1,23 @@
-import { Events } from './events';
-import { Payload, PayloadType } from '../generated/types';
+import { io, Socket } from 'socket.io-client';
+import Config from '../config';
 
-class ServerConnection {
-  endpoint: string;
+class IOClient {
+  io: Socket;
+  static instance: IOClient;
 
-  constructor(endpoint: string) {
-    this.endpoint = endpoint;
+  private constructor() {
+    this.io = io(Config.endpoint);
   }
 
-  public subscribe = (): void => {
-    const ws = new WebSocket(this.endpoint);
-    ws.binaryType = 'arraybuffer';
-    ws.onopen = () => console.log('Connection: OPEN');
-    ws.onclose = () => console.warn('Connection: CLOSE');
-    ws.onerror = () => console.error('Connection: ERROR');
-    ws.onmessage = this.onMessage;
-  };
-
-  private onMessage = (event: MessageEvent<any>): void => {
-    const payload: Payload = JSON.parse(event.data);
-    switch (payload.type) {
-      case PayloadType.CURRENT_PEER:
-        Events.emit(PayloadType.CURRENT_PEER, payload.peer);
-        break;
-      case PayloadType.ALL_PEERS:
-        Events.emit(PayloadType.ALL_PEERS, payload.peers);
-        break;
-      case PayloadType.PEER_JOINED:
-        Events.emit(PayloadType.PEER_JOINED, payload.peer);
-        break;
-      case PayloadType.PEER_LEFT:
-        Events.emit(PayloadType.PEER_LEFT, payload.peer);
-        break;
-      default:
-        break;
+  static getInstance = (): IOClient => {
+    if (!IOClient.instance) {
+      IOClient.instance = new IOClient();
     }
+
+    return IOClient.instance;
   };
 }
 
-export { ServerConnection };
+const Connection: Socket = IOClient.getInstance().io;
+
+export { Connection };

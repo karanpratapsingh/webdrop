@@ -1,26 +1,19 @@
 import { PeerInfo } from './peer.types';
 
-export type CurrentPeerPayload = {
-  type: PayloadType.CURRENT_PEER;
-  peer: PeerInfo;
+export type CurrentPeerPayloadData = PeerInfo;
+
+export type AllPeersPayloadData = PeerInfo[];
+
+export type PeerJoinedPayloadData = PeerInfo;
+
+export type PeerLeftPayloadData = PeerInfo;
+
+export type Payload<Data> = {
+  type: PayloadType;
+  data: Data;
 };
 
-export type AllPeersPayload = {
-  type: PayloadType.ALL_PEERS;
-  peers: PeerInfo[];
-};
-
-export type PeerJoinedPayload = {
-  type: PayloadType.PEER_JOINED;
-  peer: PeerInfo;
-};
-
-export type PeerLeftPayload = {
-  type: PayloadType.PEER_LEFT;
-  peer: PeerInfo;
-};
-
-export type Payload = CurrentPeerPayload | AllPeersPayload | PeerJoinedPayload | PeerLeftPayload;
+export type Payloads = Payload<CurrentPeerPayloadData> | Payload<AllPeersPayloadData> | Payload<PeerJoinedPayloadData> | Payload<PeerLeftPayloadData>;
 
 export enum PayloadType {
   CURRENT_PEER = 'current-peer',
