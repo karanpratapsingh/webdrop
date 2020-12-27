@@ -20,7 +20,7 @@ export type PeerLeftPayload = {
   peer: PeerInfo;
 };
 
-export type Payload = CurrentPeerPayload | AllPeersPayload |PeerJoinedPayload | PeerLeftPayload;
+export type Payload = CurrentPeerPayload | AllPeersPayload | PeerJoinedPayload | PeerLeftPayload;
 
 export enum PayloadType {
   CURRENT_PEER = 'current-peer',
