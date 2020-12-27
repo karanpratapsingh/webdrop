@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PayloadType, PeerInfo } from '../../generated/types';
-import { Events } from '../../utils';
+import { EventData, Events } from '../../utils';
 
 interface PeersProps {
   currentPeer?: PeerInfo;
@@ -8,29 +8,31 @@ interface PeersProps {
 
 function Peers(props: PeersProps): React.ReactElement {
   const { currentPeer } = props;
-
   const [peers, setPeers] = useState<PeerInfo[]>([]);
 
   useEffect(() => {
-    Events.on(PayloadType.ALL_PEERS, event => {
-      const { detail: peers } = event as CustomEvent;
-      setPeers(peers);
-    });
-
-    Events.on(PayloadType.PEER_JOINED, event => {
-      const { detail: peer } = event as CustomEvent;
-      const updatedPeer = peers;
-      updatedPeer.push(peer);
-      setPeers(updatedPeer);
-    });
-
-    Events.on(PayloadType.PEER_LEFT, event => {
-      const { detail: peer } = event as CustomEvent;
-      let updatedPeer = peers.filter(({ id }) => id !== peer.id);
-      updatedPeer = updatedPeer.filter(({ id }) => id !== currentPeer?.id);
-      setPeers(updatedPeer);
-    });
+    Events.on(PayloadType.ALL_PEERS, onAllPeers);
+    Events.on(PayloadType.PEER_JOINED, onPeerJoined);
+    Events.on(PayloadType.PEER_LEFT, onPeerLeft);
   }, []);
+
+  const onAllPeers = (data: EventData): void => {
+    const peers = data as PeerInfo[];
+    setPeers(peers);
+  };
+
+  const onPeerJoined = (data: EventData): void => {
+    const peer = data as PeerInfo;
+    const updatedPeer = peers;
+    updatedPeer.push(peer);
+    setPeers(updatedPeer);
+  };
+
+  const onPeerLeft = (data: EventData): void => {
+    const peer = data as PeerInfo;
+    const updatedPeer = peers.filter(({ id }) => id !== peer.id || id !== currentPeer?.id);
+    setPeers(updatedPeer);
+  };
 
   if (!currentPeer) {
     return <span>Connecting...</span>;
