@@ -13,7 +13,11 @@ export type Payload<Data> = {
   data: Data;
 };
 
-export type Payloads = Payload<CurrentPeerPayloadData> | Payload<AllPeersPayloadData> | Payload<PeerJoinedPayloadData> | Payload<PeerLeftPayloadData>;
+export type Payloads =
+  | Payload<CurrentPeerPayloadData>
+  | Payload<AllPeersPayloadData>
+  | Payload<PeerJoinedPayloadData>
+  | Payload<PeerLeftPayloadData>;
 
 export enum PayloadType {
   CURRENT_PEER = 'current-peer',

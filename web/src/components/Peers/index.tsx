@@ -1,6 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { memo, useEffect, useState } from 'react';
-import { AllPeersPayloadData, PayloadType, PeerInfo, PeerJoinedPayloadData, PeerLeftPayloadData } from '../../generated/types';
+import {
+  AllPeersPayloadData,
+  PayloadType,
+  PeerInfo,
+  PeerJoinedPayloadData,
+  PeerLeftPayloadData
+} from '../../generated/types';
 import { Connection } from '../../utils';
 
 interface PeersProps {
