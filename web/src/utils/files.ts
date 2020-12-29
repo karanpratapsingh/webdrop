@@ -35,7 +35,11 @@ export type TransferCompletePayload = {
   fileInfo: FileInfo;
 };
 
-export type FileTransferPayload = SendFileInfoPayload | SendChunkPayload | FileProgressPayload | TransferCompletePayload;
+export type FileTransferPayload =
+  | SendFileInfoPayload
+  | SendChunkPayload
+  | FileProgressPayload
+  | TransferCompletePayload;
 
 export type ChunkPayload = {
   chunkId: number;
@@ -55,7 +59,7 @@ export class FileChunker {
   private onProgress: OnProgress;
   private onComplete: OnComplete;
 
-  constructor(file: File, onChunk: OnChunk, onProgress: OnProgress, onComplete: OnComplete,) {
+  constructor(file: File, onChunk: OnChunk, onProgress: OnProgress, onComplete: OnComplete) {
     this.chunkSize = 16 * 1024;
     this.file = file;
     this.onChunk = onChunk;

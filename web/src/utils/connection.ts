@@ -16,8 +16,12 @@ class IOClient {
 
     return IOClient.instance;
   };
+
+  public getSocket = (): Socket => {
+    return this.io;
+  };
 }
 
-const Connection: Socket = IOClient.getInstance().io;
+const Connection: Socket = IOClient.getInstance().getSocket();
 
 export { Connection };
