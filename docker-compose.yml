@@ -7,7 +7,7 @@ services:
         restart: always
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: ./docker/web.Dockerfile
             target: web
         env_file:
             - .env
@@ -20,7 +20,7 @@ services:
         restart: always
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: ./docker/backend.Dockerfile
             target: backend
         env_file:
             - .env
