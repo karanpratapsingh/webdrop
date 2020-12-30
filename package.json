@@ -15,8 +15,7 @@
     "url": "https://github.com/karanpratapsingh/webdrop/issues"
   },
   "scripts": {
-    "start:web": "cd web && yarn start",
-    "start:backend": "cd backend && yarn start",
+    "build": "docker-compose up -d",
     "build:web": "cd web && yarn build",
     "build:backend": "cd backend && yarn build",
     "lint": "yarn eslint --ext .js,.jsx,.ts,.tsx .",

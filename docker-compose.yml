@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+    web:
+        container_name: web
+        image: web
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: web
+        env_file:
+            - .env
+        ports:
+            - $WEBDROP_WEB_PORT:3000
+
+    backend:
+        container_name: backend
+        image: backend
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: backend
+        env_file:
+            - .env
+        ports:
+            - $WEBDROP_BACKEND_PORT:4000
