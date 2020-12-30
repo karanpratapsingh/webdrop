@@ -65,7 +65,6 @@ export class FileChunker {
     this.onChunk = onChunk;
     this.onComplete = onComplete;
     this.onProgress = onProgress;
-    this.start();
   }
 
   public start = (): void => {

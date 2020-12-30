@@ -39,10 +39,10 @@ function Home(): React.ReactElement {
   const onTransferComplete = (chunks: Blob[], fileInfo: FileInfo): void => {
     const fileDigester = new FileDigester(chunks, fileInfo);
     const { file, url } = fileDigester.digest();
-    const anchorElement: HTMLAnchorElement = document.getElementById(downloadElementId) as HTMLAnchorElement;
-    anchorElement.href = url;
-    anchorElement.download = file.name;
-    anchorElement.click();
+    const anchor: HTMLAnchorElement = document.getElementById(downloadElementId) as HTMLAnchorElement;
+    anchor.href = url;
+    anchor.download = file.name;
+    anchor.click();
   };
 
   useEffect(() => {

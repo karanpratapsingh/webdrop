@@ -67,7 +67,7 @@ function Peers(props: PeersProps): React.ReactElement {
     }
   };
 
-  const onPeerConnectionOpen = (file: File, from: PeerInfo, connection: Peer.DataConnection) => {
+  const onPeerConnectionOpen = (file: File, from: PeerInfo, connection: Peer.DataConnection): void => {
     const payload: SendFileInfoPayload = {
       type: FileTransferPayloadType.FILE_INFO,
       fileInfo: getFileInfo(file)
