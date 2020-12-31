@@ -50,7 +50,7 @@ jobs:
         docker tag backend:latest backend:$IMAGE_TAG
         docker images
         # Push images to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$WEB_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo Pushed webdrop/web to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BACKEND_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo Pushed webdrop/backend to ECR
