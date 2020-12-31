@@ -48,11 +48,11 @@ jobs:
         # Tag images
         IMAGE_TAG=${GITHUB_SHA:0:7}
         echo Tag $IMAGE_TAG
-        docker tag web:latest $ECR_REGISTRY/$ECR_REPOSITORY/web:$IMAGE_TAG
-        docker tag backend:latest $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG
+        docker tag web:latest 332333453971.dkr.ecr.us-east-1.amazonaws.com/webdrop:web-$IMAGE_TAG
+        docker tag backend:latest 332333453971.dkr.ecr.us-east-1.amazonaws.com/webdrop:backend-$IMAGE_TAG
         docker images
         # Push images to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY/web:$IMAGE_TAG
+        docker push 332333453971.dkr.ecr.us-east-1.amazonaws.com/webdrop:web-$IMAGE_TAG
         echo Pushed webdrop/web to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY/backend:$IMAGE_TAG
+        docker push 332333453971.dkr.ecr.us-east-1.amazonaws.com/webdrop:backend-$IMAGE_TAG
         echo Pushed webdrop/backend to ECR
