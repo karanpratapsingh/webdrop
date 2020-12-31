@@ -4,7 +4,7 @@ WORKDIR /app
 # Copy web files
 COPY . .
 # Install dependencies and build web
-RUN cd web && yarn && yarn build && cd ..
+RUN yarn && cd web && yarn build && cd ..
 
 FROM node:14-alpine as web
 # Add a work directory

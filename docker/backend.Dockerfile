@@ -4,7 +4,7 @@ WORKDIR /app
 # Copy web files
 COPY . .
 # Install dependencies and build backend
-RUN cd backend && yarn && yarn build && cd ..
+RUN yarn && cd backend && yarn build && cd ..
 
 FROM node:14-alpine as backend
 # Add a work directory
