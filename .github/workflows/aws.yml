@@ -36,8 +36,8 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ secrets.WEBDROP_ECR_REPOSITORY }}
+        ECR_REGISTRY: webdrop
+        ECR_REPOSITORY: 332333453971.dkr.ecr.us-east-1.amazonaws.com/webdrop
       run: |
         echo $ECR_REGISTRY
         echo $ECR_REPOSITORY
