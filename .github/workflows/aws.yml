@@ -39,19 +39,18 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.WEBDROP_ECR_REPOSITORY }}
       run: |
-        echo $ECR_REGISTRY
-        echo $ECR_REPOSITORY
         # Build images
         docker-compose build
         echo Images built
         # Tag images
         IMAGE_TAG=${GITHUB_SHA:0:7}
-        echo Tag $IMAGE_TAG
-        docker tag web:latest $ECR_REGISTRY/$ECR_REPOSITORY:web-$IMAGE_TAG
-        docker tag backend:latest $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
+        WEB_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:web-$IMAGE_TAG
+        BACKEND_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
+        docker tag web:latest $WEB_IMAGE
+        docker tag backend:latest $BACKEND_IMAGE
         docker images
         # Push images to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:web-$IMAGE_TAG
-        echo Pushed webdrop/web to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:backend-$IMAGE_TAG
-        echo Pushed webdrop/backend to ECR
+        docker push $WEB_IMAGE
+        echo Pushed $BACKEND_IMAGE to ECR
+        docker push $BACKEND_IMAGE
+        echo Pushed $BACKEND_IMAGE to ECR
