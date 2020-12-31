@@ -38,13 +38,13 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.WEBDROP_ECR_REPOSITORY }}
-        IMAGE_TAG: ${GITHUB_SHA:0:7}
       run: |
         # Build images
         docker-compose build
         echo Images built
         docker images
         # Tag images
+        IMAGE_TAG=${GITHUB_SHA:0:7}
         echo Tag $IMAGE_TAG
         docker tag web:latest web:$IMAGE_TAG
         docker tag backend:latest backend:$IMAGE_TAG
