@@ -38,10 +38,19 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.WEBDROP_ECR_REPOSITORY }}
+        WEB_IMAGE_TAG: web:${GITHUB_SHA:0:7}
+        BACKEND_IMAGE_TAG: backend:${GITHUB_SHA:0:7}
       run: |
-        # Build a docker container and push it to ECR so that it can be deployed to ECS.
+        # Build images
         docker-compose -f docker-compose.yml build
         echo Images Built
         docker images
-        # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        # Tag images
+        docker tag web:latest $WEB_IMAGE_TAG
+        docker tag backend:latest $BACKEND_IMAGE_TAG
+        docker images
+        # Push images to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$WEB_IMAGE_TAG
+        echo Pushed webdrop/web to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BACKEND_IMAGE_TAG
+        echo Pushed webdrop/backend to ECR
