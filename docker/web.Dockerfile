@@ -12,8 +12,8 @@ WORKDIR /app
 # Copy web files
 COPY --from=builder /app/web/build .
 # Expose port(s)
-EXPOSE 3000
+EXPOSE 80 3000
 # Install static file server
 RUN npm i -g serve
 # Start on excecution
-CMD serve -s . -l 3000
+CMD serve -s . -l 80
