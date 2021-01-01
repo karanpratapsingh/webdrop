@@ -10,6 +10,6 @@ const options: ServerOptions = {
 };
 
 console.log('Environment:', process.env.NODE_ENV);
-const port: number = isDevelopment ? 4000 : 80;
+const port: number = !isDevelopment ? 4000 : 80;
 const server = new WebdropServer(port, options);
 server.init();
