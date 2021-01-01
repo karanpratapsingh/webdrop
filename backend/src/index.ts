@@ -4,7 +4,7 @@ import { isDevelopment } from './utils';
 
 const options: ServerOptions = {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true
   }
 };
