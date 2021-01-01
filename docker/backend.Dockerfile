@@ -12,6 +12,6 @@ WORKDIR /app
 # Copy backend files
 COPY --from=builder /app/backend/build .
 # Expose port(s)
-EXPOSE 4000
+EXPOSE 80 4000
 # Start on excecution
 CMD ["index.js"]
