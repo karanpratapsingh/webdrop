@@ -13,6 +13,8 @@ WORKDIR /app
 COPY --from=builder /app/web/build .
 # Expose port(s)
 EXPOSE 80 3000
+# Set ENV
+ENV NODE_ENV production
 # Install static file server
 RUN npm i -g serve
 # Start on excecution

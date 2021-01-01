@@ -13,5 +13,7 @@ WORKDIR /app
 COPY --from=builder /app/backend/build .
 # Expose port(s)
 EXPOSE 80 4000
+# Set ENV
+ENV NODE_ENV production
 # Start on excecution
 CMD ["index.js"]
