@@ -30,7 +30,7 @@ export default class WebdropServer {
   }
 
   public init = (): void => {
-    const server: http.Server = http.createServer();
+    const server: http.Server = http.createServer(this.healthCheck);
     this.io = new io.Server(server, this.options);
     this.io.on('connection', this.onConnection);
     server.listen(this.port);
@@ -104,5 +104,12 @@ export default class WebdropServer {
 
   private send = (peer: Peer, payload: Payloads): void => {
     peer.socket.emit(payload.type, payload.data);
+  };
+
+  private healthCheck = (request: http.IncomingMessage, response: http.ServerResponse): void => {
+    if (request.url === '/healthcheck') {
+      response.writeHead(200);
+      response.end(`Webdrop server is up at ${new Date().toISOString()}`);
+    }
   };
 }
