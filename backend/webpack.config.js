@@ -25,5 +25,10 @@ module.exports = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'build')
   },
-  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV', 'REACT_APP_WEBDROP_PROXY'])]
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      REACT_APP_WEBDROP_PROXY: ''
+    })
+  ]
 };
