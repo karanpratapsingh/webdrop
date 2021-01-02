@@ -34,12 +34,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:development": "yarn copy:types && yarn start",
+    "start:development": "yarn copy && yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "copy": "yarn copy:types && yarn copy:utils",  
     "copy:types": "yarn copyfiles -f ../backend/src/types/*.ts ./src/generated/types",
-    "postinstall": "yarn copy:types"
+    "copy:utils": "yarn copyfiles -f ../backend/src/utils.ts ./src/generated/",
+    "postinstall": "yarn copy"
   },
   "browserslist": {
     "production": [

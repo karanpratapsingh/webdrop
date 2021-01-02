@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const mode = isDevelopment ? 'development' : 'production';
@@ -23,5 +24,8 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'build')
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'REACT_APP_WEBDROP_PROXY'])
+  ]
 };
