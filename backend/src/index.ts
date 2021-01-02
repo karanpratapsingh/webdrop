@@ -3,7 +3,7 @@ import WebdropServer, { ServerOptions } from './server';
 
 const options: ServerOptions = {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true
   }
 };
