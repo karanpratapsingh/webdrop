@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
-      WEBDROP_WEB_PORT: 80
+      WEBDROP_WEB_PORT: 3000
       WEBDROP_WEB_ENDPOINT: http://localhost:3000
-      WEBDROP_BACKEND_PORT: 80
+      WEBDROP_BACKEND_PORT: 4000
       WEBDROP_BACKEND_ENDPOINT: http://localhost:4000
 
     steps:
@@ -37,21 +37,22 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        WEBDROP_WEB_ECR_REPOSITORY: ${{ secrets.WEBDROP_WEB_ECR_REPOSITORY }}
-        WEBDROP_BACKEND_ECR_REPOSITORY: ${{ secrets.WEBDROP_BACKEND_ECR_REPOSITORY }}
       run: |
         # Build images
         docker-compose build
         echo Images built
         # Tag images
-        IMAGE_TAG=${GITHUB_SHA:0:7}
-        WEB_IMAGE=$ECR_REGISTRY/$WEBDROP_WEB_ECR_REPOSITORY:$IMAGE_TAG
-        BACKEND_IMAGE=$ECR_REGISTRY/$WEBDROP_BACKEND_ECR_REPOSITORY:$IMAGE_TAG
+        WEB_IMAGE=$ECR_REGISTRY/$WEBDROP_ECR_REPOSITORY:web-latest
+        BACKEND_IMAGE=$ECR_REGISTRY/$WEBDROP_ECR_REPOSITORY:backend-latest
+        PROXY_IMAGE=$ECR_REGISTRY/$WEBDROP_ECR_REPOSITORY:proxy-latest
         docker tag web:latest $WEB_IMAGE
         docker tag backend:latest $BACKEND_IMAGE
+        docker tag backend:latest $PROXY_IMAGE
         docker images
         # Push images to ECR
         docker push $WEB_IMAGE
         echo Pushed $BACKEND_IMAGE to ECR
         docker push $BACKEND_IMAGE
         echo Pushed $BACKEND_IMAGE to ECR
+        docker push $PROXY_IMAGE
+        echo Pushed $PROXY_IMAGE to ECR
