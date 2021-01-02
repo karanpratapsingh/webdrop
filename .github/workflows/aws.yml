@@ -30,7 +30,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Prepare build
-      run: touch .env && env
+      run: env >> .env
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
