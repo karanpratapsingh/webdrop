@@ -52,7 +52,7 @@ jobs:
         docker images
         # Push images to ECR
         docker push $WEB_IMAGE
-        echo Pushed $BACKEND_IMAGE to ECR
+        echo Pushed $WEB_IMAGE to ECR
         docker push $BACKEND_IMAGE
         echo Pushed $BACKEND_IMAGE to ECR
         docker push $PROXY_IMAGE
