@@ -18,8 +18,8 @@
   "scripts": {
     "start": "node build",
     "start:development": "yarn concurrently \"yarn nodemon build\" \"yarn build:watch\"",
-    "build": "yarn webpack",
-    "build:watch": "yarn webpack --watch"
+    "build": "env yarn webpack",
+    "build:watch": "env yarn webpack --watch"
   },
   "dependencies": {
     "@types/node": "14.11.8",

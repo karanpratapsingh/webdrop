@@ -11,8 +11,8 @@ jobs:
     env:
       NODE_ENV: production
       WEBDROP_WEB_PORT: 3000
-      REACT_APP_WEBDROP_PROXY: ${{ secrets.WEBDROP_PROXY }}
       WEBDROP_BACKEND_PORT: 4000
+      REACT_APP_WEBDROP_PROXY: ${{ secrets.WEBDROP_PROXY }}
 
     steps:
     - name: Checkout
