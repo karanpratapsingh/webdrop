@@ -1,6 +1,5 @@
 import './process';
 import WebdropServer, { ServerOptions } from './server';
-import { isDevelopment } from './utils';
 
 const options: ServerOptions = {
   cors: {
@@ -10,6 +9,5 @@ const options: ServerOptions = {
 };
 
 console.log('Environment:', process.env.NODE_ENV);
-const port: number = isDevelopment ? 4000 : 80;
-const server = new WebdropServer(port, options);
+const server = new WebdropServer(4000, options);
 server.init();
