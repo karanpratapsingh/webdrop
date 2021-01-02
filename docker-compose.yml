@@ -1,6 +1,17 @@
 version: "3.4"
 
 services:
+    proxy:
+        container_name: proxy
+        image: proxy
+        restart: always
+        build:
+            context: .
+            dockerfile: ./docker/proxy.Dockerfile
+            target: proxy
+        ports:
+            - 80:80
+
     web:
         container_name: web
         image: web
