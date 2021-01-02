@@ -48,7 +48,7 @@ jobs:
         PROXY_IMAGE=$ECR_REGISTRY/$WEBDROP_ECR_REPOSITORY:proxy-latest
         docker tag web:latest $WEB_IMAGE
         docker tag backend:latest $BACKEND_IMAGE
-        docker tag backend:latest $PROXY_IMAGE
+        docker tag proxy:latest $PROXY_IMAGE
         docker images
         # Push images to ECR
         docker push $WEB_IMAGE
