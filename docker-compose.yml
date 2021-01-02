@@ -11,6 +11,9 @@ services:
             target: proxy
         ports:
             - 80:80
+        depends_on: 
+            - backend
+            - web
 
     web:
         container_name: web
