@@ -17,7 +17,8 @@ export default class Peer {
   }
 
   private getIP(socket: io.Socket): IP {
-    console.log(socket);
+    console.log(socket.request.headers['x-forwarded-for']);
+    console.log(socket.request.connection.remoteAddress);
     let ip = socket.handshake.address;
     if (['::1', '::ffff:127.0.0.1'].includes(ip)) {
       ip = '127.0.0.1';
