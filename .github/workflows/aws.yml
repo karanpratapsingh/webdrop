@@ -13,6 +13,7 @@ jobs:
       WEBDROP_WEB_PORT: 3000
       WEBDROP_BACKEND_PORT: 4000
       REACT_APP_WEBDROP_PROXY: ${{ secrets.WEBDROP_PROXY }}
+      CI: false
 
     steps:
     - name: Checkout
