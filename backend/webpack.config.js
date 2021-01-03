@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      REACT_APP_WEBDROP_PROXY: 'http://localhost'
+      REACT_APP_WEBDROP_PROXY: 'http://localhost:3000'
     })
   ]
 };

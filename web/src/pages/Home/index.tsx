@@ -1,10 +1,9 @@
+import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Details, Peers } from '../../components';
 import { CurrentPeerPayloadData, PayloadType, PeerInfo } from '../../generated/types';
 import { Connection, FileDigester, FileInfo, FileTransferPayload, FileTransferPayloadType } from '../../utils';
-
-const downloadElementId: string = 'download';
 
 function Home(): React.ReactElement {
   const [currentPeer, setCurrentPeer] = useState<PeerInfo>();
@@ -38,11 +37,8 @@ function Home(): React.ReactElement {
 
   const onTransferComplete = (chunks: Blob[], fileInfo: FileInfo): void => {
     const fileDigester = new FileDigester(chunks, fileInfo);
-    const { file, url } = fileDigester.digest();
-    const anchor: HTMLAnchorElement = document.getElementById(downloadElementId) as HTMLAnchorElement;
-    anchor.href = url;
-    anchor.download = file.name;
-    anchor.click();
+    const file: File = fileDigester.digest();
+    FileSaver.saveAs(file, file.name);
   };
 
   useEffect(() => {
@@ -63,7 +59,6 @@ function Home(): React.ReactElement {
     <div>
       <Peers peer={peer} currentPeer={currentPeer} />
       <Details currentPeer={currentPeer} />
-      <a id={downloadElementId}></a>
     </div>
   );
 }
