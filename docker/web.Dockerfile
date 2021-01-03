@@ -14,7 +14,7 @@ COPY --from=builder /app/web/build .
 # Expose port(s)
 EXPOSE 3000
 # Set ENV
-ENV NODE_ENV production
+ENV NODE_ENV test
 # Install static file server
 RUN npm i -g serve
 # Start on excecution
