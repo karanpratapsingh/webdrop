@@ -1,4 +1,4 @@
-import { getEnv } from '../generated/utils';
+import { getEnv, isDevelopment } from '../generated/utils';
 
 interface IConfig {
   endpoint: string;
@@ -7,7 +7,7 @@ interface IConfig {
 
 const Config: IConfig = {
   endpoint: getEnv('REACT_APP_WEBDROP_PROXY'),
-  path: '/backend/socket.io'
+  path: isDevelopment ? '/socket.io' : '/backend/socket.io'
 };
 
 export default Config;
