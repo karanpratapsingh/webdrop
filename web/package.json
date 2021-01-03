@@ -23,6 +23,7 @@
     "@types/react": "16.9.53",
     "@types/react-dom": "16.9.8",
     "copyfiles": "2.4.1",
+    "env-cmd": "10.1.0",
     "node-sass": "4.14.1",
     "peerjs": "1.3.1",
     "react": "17.0.1",
@@ -33,12 +34,12 @@
     "web-vitals": "0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "yarn env-cmd -f ../.env react-scripts start",
     "start:development": "yarn copy && yarn start",
-    "build": "react-scripts build",
+    "build": "yarn env-cmd -f ../.env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "copy": "yarn copy:types && yarn copy:utils",  
+    "copy": "yarn copy:types && yarn copy:utils",
     "copy:types": "yarn copyfiles -f ../backend/src/types/*.ts ./src/generated/types",
     "copy:utils": "yarn copyfiles -f ../backend/src/utils.ts ./src/generated/",
     "postinstall": "yarn copy"

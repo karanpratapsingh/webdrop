@@ -18,4 +18,4 @@ ENV NODE_ENV production
 # Install static file server
 RUN npm i -g serve
 # Start on excecution
-CMD env >> .env && env $(cat ./.env) serve -s . -l 3000
+CMD serve -s . -l 3000
