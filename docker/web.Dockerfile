@@ -15,8 +15,7 @@ COPY --from=builder /app/web/build .
 EXPOSE 3000
 # Set ENV
 ENV NODE_ENV production
-ENV REACT_APP_WEBDROP_PROXY http://localhost
 # Install static file server
 RUN npm i -g serve
 # Start on excecution
-CMD env && env serve -s . -l 3000
+CMD env >> .env && env $(cat ./.env) serve -s . -l 3000
