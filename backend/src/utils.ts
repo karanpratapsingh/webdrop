@@ -4,6 +4,7 @@ export function getEnv(env: string): string {
   const foundEnv = process.env[env];
 
   if (!foundEnv) {
+    console.log(process.env);
     throw new Error(`ENV: ${env} not found`);
   }
 
