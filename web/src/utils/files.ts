@@ -90,11 +90,6 @@ export class FileChunker {
   }
 }
 
-export type DigestedFile = {
-  file: File;
-  url: string;
-};
-
 export class FileDigester {
   private chunks: Blob[];
   private fileInfo: FileInfo;
@@ -104,10 +99,9 @@ export class FileDigester {
     this.fileInfo = fileInfo;
   }
 
-  public digest = (): DigestedFile => {
+  public digest = (): File => {
     const file = new File(this.chunks, this.fileInfo.name);
-    const url: string = URL.createObjectURL(file);
-    return { file, url };
+    return file;
   };
 }
 
