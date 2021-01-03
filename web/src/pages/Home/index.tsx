@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { useCallback, useEffect, useState } from 'react';
-import { isChrome, isIOS, fullBrowserVersion } from 'react-device-detect';
+import { isChrome, isIOS, browserName } from 'react-device-detect';
 import { Details, Peers } from '../../components';
 import { CurrentPeerPayloadData, PayloadType, PeerInfo } from '../../generated/types';
 import { Connection, FileDigester, FileInfo, FileTransferPayload, FileTransferPayloadType } from '../../utils';
@@ -42,13 +42,12 @@ function Home(): React.ReactElement {
 
     if (isChrome && isIOS) {
       const reader = new FileReader();
-      const out = new Blob([file], { type: file.type });
-      reader.onload = () => {
+      reader.onloadend = () => {
         window.location.href = reader.result as string;
       };
-      reader.readAsDataURL(out);
+      reader.readAsDataURL(file);
     } else {
-      FileSaver.saveAs(new Blob([file]), file.name);
+      FileSaver.saveAs(file, file.name);
     }
   };
 
@@ -70,8 +69,7 @@ function Home(): React.ReactElement {
     <div>
       <Peers peer={peer} currentPeer={currentPeer} />
       <Details currentPeer={currentPeer} />
-      <p>Chrome: {isChrome ? 'yes' : 'no'}, iOS: {isIOS ? 'yes' : 'no'}</p>
-      <p>Browser: {fullBrowserVersion}</p>
+      <p>Browser: {browserName}</p>
     </div>
   );
 }
