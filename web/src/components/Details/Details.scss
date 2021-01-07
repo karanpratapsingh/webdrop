@@ -2,6 +2,9 @@
 @import '../../global/typography.scss';
 
 .details {
+  @include theme() {
+    background-color: theme(background);
+  }
   display: flex;
   padding: 2em;
   flex-direction: column;

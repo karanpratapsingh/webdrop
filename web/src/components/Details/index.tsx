@@ -13,7 +13,7 @@ function Details(props: DetailsProps): React.ReactElement {
   return (
     <div className='details'>
       <img src={Logo} alt='airdrop logo' />
-      <span>you&apos;re known as {currentPeer.name}</span>
+      <span>You are known as {currentPeer.name}</span>
       <p>you can be discovered by anyone on the network</p>
     </div>
   );

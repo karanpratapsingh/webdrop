@@ -2,6 +2,9 @@
 @import '../../global/typography.scss';
 
 .peer {
+  @include theme() {
+    background-color: theme(background);
+  }
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -65,7 +68,9 @@
   }
 
   .name {
-    color: black;
+    @include theme() {
+      color: theme(text1);
+    }
     font-size: $body;
   }
 

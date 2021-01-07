@@ -1,6 +1,9 @@
 @import '../../global/theme.scss';
 
 .home {
+  @include theme() {
+    background-color: theme(background);
+  }
   display: flex;
   flex-direction: column;
   flex: 1;

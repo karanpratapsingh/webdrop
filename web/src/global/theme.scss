@@ -7,10 +7,12 @@ $background-dark: #161616;
 $themes: (
   light: (
     text: $text-light,
+    text1: black,
     background: $background-light
   ),
   dark: (
     text: $text-dark,
+    text1: white,
     background: $background-dark
   )
 );
