@@ -1,28 +1,20 @@
 import React from 'react';
 import { PeerInfo } from '../../generated/types';
+import './Details.scss';
+import Logo from '../../assets/logo.svg';
 
 interface DetailsProps {
-  currentPeer?: PeerInfo;
+  currentPeer: PeerInfo;
 }
 
 function Details(props: DetailsProps): React.ReactElement {
   const { currentPeer } = props;
 
-  if (!currentPeer) return <span>Loading...</span>;
-
   return (
-    <div>
-      <hr></hr>
-      <h3>Details:</h3>
-      <p>
-        <b>Name:</b> {currentPeer?.name}
-      </p>
-      <p>
-        <b>ID:</b> {currentPeer?.id}
-      </p>
-      <p>
-        <b>IP:</b> {currentPeer?.ip}
-      </p>
+    <div className='details'>
+      <img src={Logo} alt='airdrop logo' />
+      <span>you&apos;re known as {currentPeer.name}</span>
+      <p>you can be discovered by anyone on the network</p>
     </div>
   );
 }

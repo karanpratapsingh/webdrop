@@ -1,10 +1,10 @@
 import './process';
 import WebdropServer, { ServerOptions } from './server';
-import { getEnv } from './utils';
+import { getAllowedOrigin } from './utils';
 
 const options: ServerOptions = {
   cors: {
-    origin: getEnv('REACT_APP_WEBDROP_PROXY'),
+    origin: getAllowedOrigin(),
     credentials: true
   }
 };

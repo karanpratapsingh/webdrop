@@ -1,0 +1,17 @@
+@import '../../global/theme.scss';
+
+.home {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.loader {
+  @include theme() {
+    background-color: theme(background);
+  }
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}

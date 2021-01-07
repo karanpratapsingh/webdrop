@@ -1,0 +1,87 @@
+@import '../../global/theme.scss';
+@import '../../global/typography.scss';
+
+.peer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: $primary;
+    font-size: $subtitle;
+  }
+}
+
+.peers-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 10vw;
+
+  .heading {
+    align-self: center;
+    @include theme() {
+      color: theme(text);
+    }
+    font-size: $body;
+  }
+
+  .peer-list {
+    display: flex;
+    margin-top: 2em;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.peer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+
+  &:not(:first-child) {
+    margin-left: 1em;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
+    border-radius: 60px;
+    margin-bottom: 0.5em;
+    background-color: $primary;
+    cursor: pointer;
+    padding: 4px;
+
+    .device {
+      position: absolute;
+    }
+  }
+
+  .name {
+    color: black;
+    font-size: $body;
+  }
+
+  .info {
+    @include theme() {
+      color: theme(text);
+    }
+    font-size: $caption;
+    margin-top: 0.2em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .peer {
+    span {
+      font-size: $body;
+    }
+  }
+}
