@@ -20,15 +20,19 @@ import {
   SendFileInfoPayload,
   TransferCompletePayload
 } from '../../utils';
+import './Peers.scss';
+import { BsPhone } from 'react-icons/bs';
+import { Colors } from '../../theme';
 
 interface PeersProps {
-  currentPeer?: PeerInfo;
-  peer?: Peer;
+  currentPeer: PeerInfo;
+  peer: Peer;
 }
 
 function Peers(props: PeersProps): React.ReactElement {
   const { currentPeer, peer } = props;
   const [peers, setPeers] = useState<PeerInfo[]>([]);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     Connection.on(PayloadType.ALL_PEERS, onAllPeers);
@@ -51,17 +55,17 @@ function Peers(props: PeersProps): React.ReactElement {
     setPeers(updatedPeer);
   };
 
-  if (!currentPeer) {
-    return <span>Connecting...</span>;
-  }
+  const onPeerClick = (): void => {
+    fileInputRef.current?.click();
+  };
 
-  const onPeerClick = (event: React.ChangeEvent<HTMLInputElement>, to: PeerInfo): void => {
+  const onFileSelect = (event: React.ChangeEvent<HTMLInputElement>, to: PeerInfo): void => {
     event.preventDefault();
     const { files } = event.target;
     if (!files || !files?.length) return;
 
     const file: File | null = files.item(0);
-    if (peer && file) {
+    if (file) {
       const connection: Peer.DataConnection = peer.connect(to.id);
       connection.on('open', () => onPeerConnectionOpen(file, currentPeer, connection));
     }
@@ -103,18 +107,34 @@ function Peers(props: PeersProps): React.ReactElement {
     chunker.start();
   };
 
-  return (
-    <div>
-      <h3>Available:</h3>
-      {!peers.length && <span>No peer</span>}
-      {peers.map((peer, index: number) => (
-        <div key={index} style={{ height: 20, background: 'lavender', cursor: 'pointer' }}>
-          <input type='file' onChange={event => onPeerClick(event, peer)} />
-          <span>
-            Name: {peer.name} id:{peer.id}
-          </span>
+  const hasPeers: boolean = !!peers.length;
+
+  let content: React.ReactNode = <span>Open webdrop on other devices to send files</span>;
+
+  if (hasPeers) {
+    content = (
+      <div className='peers-content'>
+        <span className='heading'>Click to send a file</span>
+        <div className='peer-list'>
+          {peers.map((peer: PeerInfo, index: number) => (
+            <div key={index} className='peer-card'>
+              <div className='icon'>
+                <BsPhone onClick={onPeerClick} color={Colors.white} size={25} />
+              </div>
+              <input ref={fileInputRef} hidden type='file' onChange={event => onFileSelect(event, peer)} />
+              <span className='name'>{peer.name}</span>
+              {/* TODO: add type */}
+              <span className='info'>Mac Chrome</span>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className='peer'>
+      {content}
     </div>
   );
 }

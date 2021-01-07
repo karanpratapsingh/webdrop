@@ -1,0 +1,25 @@
+@import '../../global/theme.scss';
+@import '../../global/typography.scss';
+
+.details {
+  display: flex;
+  padding: 2em;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    height: 3em;
+    width: 3em;
+    margin-bottom: 1em;
+  }
+  span {
+    @include theme() {
+      color: theme(text);
+    }
+    font-size: $body;
+  }
+  p {
+    color: $primary;
+    font-size: $caption;
+  }
+}

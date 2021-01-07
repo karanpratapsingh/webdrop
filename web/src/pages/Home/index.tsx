@@ -1,10 +1,13 @@
 import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { useCallback, useEffect, useState } from 'react';
-import { isChrome, isIOS, browserName } from 'react-device-detect';
+import { isChrome, isIOS } from 'react-device-detect';
+import Loader from 'react-loader-spinner';
 import { Details, Peers } from '../../components';
 import { CurrentPeerPayloadData, PayloadType, PeerInfo } from '../../generated/types';
+import { Colors } from '../../theme';
 import { Connection, FileDigester, FileInfo, FileTransferPayload, FileTransferPayloadType } from '../../utils';
+import './Home.scss';
 
 function Home(): React.ReactElement {
   const [currentPeer, setCurrentPeer] = useState<PeerInfo>();
@@ -65,13 +68,23 @@ function Home(): React.ReactElement {
     setPeer(peer);
   };
 
-  return (
-    <div>
-      <Peers peer={peer} currentPeer={currentPeer} />
-      <Details currentPeer={currentPeer} />
-      <p>Browser: {browserName}</p>
+  let content: React.ReactNode = (
+    <div className='loader'>
+      <Loader type='Oval' color={Colors.primary} height={50} width={50} />
     </div>
   );
+
+  if (peer && currentPeer) {
+    content = (
+      <React.Fragment>
+        <Peers peer={peer} currentPeer={currentPeer} />
+        <Details currentPeer={currentPeer} />
+      </React.Fragment>
+    );
+  }
+
+  // TODO: make theme switchable
+  return <div className='theme--light home'>{content}</div>;
 }
 
 export default Home;
