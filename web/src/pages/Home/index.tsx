@@ -3,7 +3,14 @@ import Peer from 'peerjs';
 import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
 import { Details, Peers } from '../../components';
-import { AllPeersPayloadData, CurrentPeerPayloadData, PayloadType, PeerInfo, PeerJoinedPayloadData, PeerLeftPayloadData } from '../../generated/types';
+import {
+  AllPeersPayloadData,
+  CurrentPeerPayloadData,
+  PayloadType,
+  PeerInfo,
+  PeerJoinedPayloadData,
+  PeerLeftPayloadData
+} from '../../generated/types';
 import { Colors } from '../../theme';
 import { Connection } from '../../utils';
 import './Home.scss';

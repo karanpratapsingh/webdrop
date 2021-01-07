@@ -4,7 +4,7 @@ import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { memo, useCallback, useEffect } from 'react';
 import { isChrome, isIOS } from 'react-device-detect';
-import { BsPhone } from 'react-icons/bs';
+import { BsLaptop, BsPhone } from 'react-icons/bs';
 import { PeerInfo } from '../../generated/types';
 import { Colors } from '../../theme';
 import {
@@ -13,7 +13,8 @@ import {
   FileDigester,
   FileInfo,
   FileProgressPayload,
-  FileTransferPayload, FileTransferPayloadType,
+  FileTransferPayload,
+  FileTransferPayloadType,
   getFileInfo,
   SendChunkPayload,
   SendFileInfoPayload,
@@ -76,7 +77,6 @@ function Peers(props: PeersProps): React.ReactElement {
     peer.on('connection', onConnection);
   }, [onConnection]);
 
-
   const onPeerClick = (): void => {
     fileInputRef.current?.click();
   };
@@ -129,6 +129,26 @@ function Peers(props: PeersProps): React.ReactElement {
     chunker.start();
   };
 
+  const getIcon = (mobile: boolean): React.ReactNode => {
+    const props = {
+      onClick: onPeerClick,
+      color: Colors.white,
+      size: 25
+    };
+
+    let content: React.ReactNode = <BsLaptop {...props} />;
+
+    if (mobile) {
+      content = <BsPhone {...props} />;
+    }
+
+    return (
+      <div className='icon'>
+        {content}
+      </div>
+    );
+  };
+
   const hasPeers: boolean = !!peers.length;
 
   let content: React.ReactNode = <span>Open webdrop on other devices to send files</span>;
@@ -140,13 +160,10 @@ function Peers(props: PeersProps): React.ReactElement {
         <div className='peer-list'>
           {peers.map((peer: PeerInfo, index: number) => (
             <div key={index} className='peer-card'>
-              <div className='icon'>
-                <BsPhone onClick={onPeerClick} color={Colors.white} size={25} />
-              </div>
+              {getIcon(peer.mobile)}
               <input ref={fileInputRef} hidden type='file' onChange={event => onFileSelect(event, peer)} />
               <span className='name'>{peer.name}</span>
-              {/* TODO: add type */}
-              <span className='info'>Mac Chrome</span>
+              <span className='info'>{peer.os} {peer.browser}</span>
             </div>
           ))}
         </div>

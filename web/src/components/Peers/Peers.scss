@@ -32,6 +32,7 @@
     margin-top: 2em;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
   }
 }
 
@@ -40,7 +41,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-right: 1.2em;
+  margin-top: 1em;
+
+  &:not(:first-child) {
+    margin-left: 1em;
+  }
 
   .icon {
     display: flex;
@@ -65,5 +70,13 @@
     }
     font-size: $caption;
     margin-top: 0.2em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .peer {
+    span {
+      font-size: $body;
+    }
   }
 }
