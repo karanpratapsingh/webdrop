@@ -1,59 +1,81 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react-hooks/exhaustive-deps */
+import FileSaver from 'file-saver';
 import Peer from 'peerjs';
-import React, { memo, useEffect, useState } from 'react';
-import {
-  AllPeersPayloadData,
-  PayloadType,
-  PeerInfo,
-  PeerJoinedPayloadData,
-  PeerLeftPayloadData
-} from '../../generated/types';
+import React, { memo, useCallback, useEffect } from 'react';
+import { isChrome, isIOS } from 'react-device-detect';
+import { BsPhone } from 'react-icons/bs';
+import { PeerInfo } from '../../generated/types';
+import { Colors } from '../../theme';
 import {
   ChunkPayload,
-  Connection,
   FileChunker,
+  FileDigester,
+  FileInfo,
   FileProgressPayload,
-  FileTransferPayloadType,
+  FileTransferPayload, FileTransferPayloadType,
   getFileInfo,
   SendChunkPayload,
   SendFileInfoPayload,
   TransferCompletePayload
 } from '../../utils';
 import './Peers.scss';
-import { BsPhone } from 'react-icons/bs';
-import { Colors } from '../../theme';
 
 interface PeersProps {
   currentPeer: PeerInfo;
   peer: Peer;
+  peers: PeerInfo[];
 }
 
 function Peers(props: PeersProps): React.ReactElement {
-  const { currentPeer, peer } = props;
-  const [peers, setPeers] = useState<PeerInfo[]>([]);
+  const { currentPeer, peer, peers } = props;
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    Connection.on(PayloadType.ALL_PEERS, onAllPeers);
-    Connection.on(PayloadType.PEER_JOINED, onPeerJoined);
-    Connection.on(PayloadType.PEER_LEFT, onPeerLeft);
+  const onConnection = useCallback((connection: Peer.DataConnection) => {
+    const chunks: Blob[] = [];
+    connection.on('data', (data: FileTransferPayload) => {
+      switch (data.type) {
+        case FileTransferPayloadType.FILE_INFO:
+          // TODO: notify user
+          break;
+
+        case FileTransferPayloadType.CHUNK_RECEIVED:
+          chunks.push(data.chunk);
+          break;
+
+        case FileTransferPayloadType.PROGRESS:
+          break;
+
+        case FileTransferPayloadType.TRANSFER_COMPLETE:
+          // TODO: transfer complete
+          onTransferComplete(chunks, data.fileInfo);
+          break;
+
+        default:
+          break;
+      }
+    });
   }, []);
 
-  const onAllPeers = (peers: AllPeersPayloadData): void => {
-    setPeers(peers);
+  const onTransferComplete = (chunks: Blob[], fileInfo: FileInfo): void => {
+    const fileDigester = new FileDigester(chunks, fileInfo);
+    const file: File = fileDigester.digest();
+
+    if (isChrome && isIOS) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        window.location.href = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      FileSaver.saveAs(file, file.name);
+    }
   };
 
-  const onPeerJoined = (peer: PeerJoinedPayloadData): void => {
-    const updatedPeer = [...peers];
-    updatedPeer.push(peer);
-    setPeers(updatedPeer);
-  };
+  useEffect(() => {
+    peer.on('connection', onConnection);
+  }, [onConnection]);
 
-  const onPeerLeft = (peer: PeerLeftPayloadData): void => {
-    const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
-    setPeers(updatedPeer);
-  };
 
   const onPeerClick = (): void => {
     fileInputRef.current?.click();
@@ -132,11 +154,7 @@ function Peers(props: PeersProps): React.ReactElement {
     );
   }
 
-  return (
-    <div className='peer'>
-      {content}
-    </div>
-  );
+  return <div className='peer'>{content}</div>;
 }
 
 export default memo(Peers);
