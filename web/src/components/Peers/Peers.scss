@@ -57,6 +57,11 @@
     margin-bottom: 0.5em;
     background-color: $primary;
     cursor: pointer;
+    padding: 4px;
+
+    .device {
+      position: absolute;
+    }
   }
 
   .name {

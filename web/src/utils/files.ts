@@ -15,6 +15,7 @@ export type FileInfo = {
 
 export type SendFileInfoPayload = {
   type: FileTransferPayloadType.FILE_INFO;
+  from: PeerInfo;
   fileInfo: FileInfo;
 };
 
@@ -27,6 +28,7 @@ export type SendChunkPayload = {
 
 export type FileProgressPayload = {
   type: FileTransferPayloadType.PROGRESS;
+  from: PeerInfo;
   progress: number;
 };
 
@@ -69,9 +71,15 @@ export class FileChunker {
 
   public start = (): void => {
     let chunkId: number = 0;
+    let lastProgress: number = 0;
 
     for (let offset = 0; offset < this.file.size; offset += this.chunkSize) {
-      this.onProgress(this.progress(offset));
+      const progress: number = this.progress(offset);
+
+      if (progress - lastProgress > 5) {
+        this.onProgress(progress);
+      }
+      lastProgress = progress;
       this.onChunk({ chunk: this.readChunk(offset), chunkId });
       chunkId++;
     }
@@ -86,7 +94,7 @@ export class FileChunker {
   };
 
   private progress(offset: number): number {
-    return offset / this.file.size;
+    return Math.round((offset / this.file.size) * 100);
   }
 }
 
