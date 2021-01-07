@@ -16,10 +16,10 @@
     "url": "https://github.com/karanpratapsingh/webdrop/issues"
   },
   "scripts": {
-    "start": "node build",
-    "start:development": "yarn concurrently \"yarn nodemon build\" \"yarn build:watch\"",
+    "start": "yarn export:env && yarn concurrently \"yarn nodemon build\" \"yarn build:watch\"",
     "build": "env yarn webpack",
-    "build:watch": "env yarn webpack --watch"
+    "build:watch": "env yarn webpack --watch",
+    "export:env": "export $(cat ../.env)"
   },
   "dependencies": {
     "@types/node": "14.11.8",
