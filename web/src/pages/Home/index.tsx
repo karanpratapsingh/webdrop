@@ -58,7 +58,7 @@ function Home(): React.ReactElement {
 
   let content: React.ReactNode = (
     <div className='loader'>
-      <Loader type='Oval' color={Colors.primary} height={50} width={50} />
+      <Loader type='Oval' color={Colors.primary} height={40} width={40} />
     </div>
   );
 
