@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
   img {
     height: 3em;
     width: 3em;
@@ -22,4 +23,5 @@
     color: $primary;
     font-size: $caption;
   }
+  z-index: 10;
 }

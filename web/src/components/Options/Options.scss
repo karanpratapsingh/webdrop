@@ -1,0 +1,25 @@
+@import '../../global/theme.scss';
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  width: 8%;
+  right: 15px;
+  top: 15px;
+  z-index: 100;
+
+  .icon {
+    @include theme() {
+      color: theme(text1);
+    }
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .options {
+    width: 30%;
+  }
+}
