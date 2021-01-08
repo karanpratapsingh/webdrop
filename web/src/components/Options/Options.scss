@@ -12,7 +12,7 @@
 
   .icon {
     @include theme() {
-      color: theme(text1)
+      color: theme(text1);
     }
     cursor: pointer;
   }

@@ -1,6 +1,6 @@
 export const Colors: Record<string, string> = {
-  primary: '#007AFF',
-  white: '#ffffff'
+  primary: '#007AFE',
+  white: '#FFFFFF'
 };
 
 export enum Theme {
