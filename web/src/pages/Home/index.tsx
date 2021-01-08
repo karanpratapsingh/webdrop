@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Peer from 'peerjs';
 import React, { useEffect, useState } from 'react';
+import Div100vh from 'react-div-100vh';
 import Loader from 'react-loader-spinner';
-import { Details, Peers } from '../../components';
+import { Details, Peers, Ripple } from '../../components';
 import {
   AllPeersPayloadData,
   CurrentPeerPayloadData,
@@ -64,7 +65,14 @@ function Home(): React.ReactElement {
   }
 
   // TODO: make theme switchable
-  return <div className='theme--light home'>{content}</div>;
+  return (
+    <Div100vh className='theme--light root'>
+      <div className='home'>
+        {content}
+        <Ripple />
+      </div>
+    </Div100vh>
+  );
 }
 
 export default Home;

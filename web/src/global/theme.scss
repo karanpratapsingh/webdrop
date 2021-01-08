@@ -1,19 +1,23 @@
 $primary: #007aff;
-$text-light: #666666;
+$text-light: #606060;
 $background-light: #ffffff;
 $text-dark: #f5f5f5;
 $background-dark: #161616;
+$rippleLight: #DFDFDF;
+$rippleDark: #404040;
 
 $themes: (
   light: (
     text: $text-light,
     text1: black,
-    background: $background-light
+    background: $background-light,
+    ripple: $rippleLight
   ),
   dark: (
     text: $text-dark,
     text1: white,
-    background: $background-dark
+    background: $background-dark,
+    ripple: $rippleDark
   )
 );
 

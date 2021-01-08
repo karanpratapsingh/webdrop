@@ -1,7 +1,7 @@
 import React from 'react';
 import { PeerInfo } from '../../generated/types';
 import './Details.scss';
-import Logo from '../../assets/logo.svg';
+import Logo from '../../assets/svgs/logo.svg';
 
 interface DetailsProps {
   currentPeer: PeerInfo;

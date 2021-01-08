@@ -1,5 +1,11 @@
 @import '../../global/theme.scss';
 
+.root {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
 .home {
   @include theme() {
     background-color: theme(background);

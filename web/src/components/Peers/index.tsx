@@ -186,7 +186,7 @@ function Peers(props: PeersProps): React.ReactElement {
 
   const hasPeers: boolean = !!peers.length;
 
-  let content: React.ReactNode = <span>Open webdrop on other devices to send files</span>;
+  let content: React.ReactNode = <span>Open Webdrop on other devices to send files</span>;
 
   if (hasPeers) {
     content = (
