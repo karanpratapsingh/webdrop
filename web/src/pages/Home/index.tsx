@@ -25,15 +25,12 @@ function Home(): React.ReactElement {
 
   const onAllPeers = useCallback((peers: AllPeersPayloadData): void => {
     setPeers(peers);
-    console.log('ALL_PEERS', peers);
   }, []);
 
   const onPeerJoined = useCallback(
     (peer: PeerJoinedPayloadData): void => {
       const updatedPeer = [...peers];
       updatedPeer.push(peer);
-      console.log('PEER_JOINED peers', peers);
-      console.log('PEER_JOINED updatedPeer', updatedPeer);
       setPeers(updatedPeer);
     },
     [peers]
@@ -42,7 +39,6 @@ function Home(): React.ReactElement {
   const onPeerLeft = useCallback(
     (peer: PeerLeftPayloadData): void => {
       const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
-      console.log('PEER_LEFT', updatedPeer);
       setPeers(updatedPeer);
     },
     [peers]
@@ -61,8 +57,14 @@ function Home(): React.ReactElement {
     Connection.on(PayloadType.PEER_LEFT, onPeerLeft);
   }, [onCurrentPeer, onAllPeers, onPeerJoined, onPeerLeft]);
 
-  const onThemeUpdate = (theme: Theme): void => {
-    setTheme(theme);
+  const toggleTheme = (): void => {
+    let updatedTheme: Theme = Theme.LIGHT;
+
+    if (theme === Theme.LIGHT) {
+      updatedTheme = Theme.DARK;
+    }
+
+    setTheme(updatedTheme);
   };
 
   let content: React.ReactNode = (
@@ -72,9 +74,11 @@ function Home(): React.ReactElement {
   );
 
   if (peer && currentPeer) {
+    const darkMode: boolean = theme === Theme.DARK;
+
     content = (
       <React.Fragment>
-        <Options theme={theme} onThemeUpdate={onThemeUpdate} />
+        <Options darkMode={darkMode} toggleTheme={toggleTheme} />
         <Peers peers={peers} peer={peer} currentPeer={currentPeer} />
         <Details currentPeer={currentPeer} />
       </React.Fragment>

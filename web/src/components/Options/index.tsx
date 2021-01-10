@@ -1,23 +1,24 @@
 import React, { useEffect } from 'react';
+import { isMobile } from 'react-device-detect';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { FaMoon } from 'react-icons/fa';
 import { IoIosAddCircleOutline, IoIosSunny } from 'react-icons/io';
-import { Theme } from '../../theme';
 import './Options.scss';
 
 interface Props {
-  theme: Theme;
-  onThemeUpdate: (theme: Theme) => void;
+  darkMode: boolean;
+  toggleTheme: () => void;
 }
 
 const pwaID: string = 'install-pwa';
 
 function Options(props: Props): React.ReactElement {
-  const { theme, onThemeUpdate } = props;
+  const { darkMode, toggleTheme } = props;
 
   useEffect(() => {
     const listener = (event: any): void => {
-      if (window.matchMedia('(display-mode: standalone)').matches) {
+      const { matches } = window.matchMedia('(display-mode: standalone)');
+      if (matches) {
         return event.preventDefault();
       } else {
         const button: HTMLElement | null = document.getElementById(pwaID);
@@ -36,17 +37,17 @@ function Options(props: Props): React.ReactElement {
     };
   }, []);
 
-  let themeIcon: React.ReactNode = <IoIosSunny className='icon' onClick={() => onThemeUpdate(Theme.DARK)} size={30} />;
+  let themeIcon: React.ReactNode = <IoIosSunny className='icon' onClick={toggleTheme} size={30} />;
 
-  if (theme === Theme.DARK) {
-    themeIcon = <FaMoon className='icon' onClick={() => onThemeUpdate(Theme.LIGHT)} size={20} />;
+  if (darkMode) {
+    themeIcon = <FaMoon className='icon' onClick={toggleTheme} size={20} />;
   }
 
   return (
     <div className='options'>
-      <IoIosAddCircleOutline id={pwaID} className='icon' size={27} />
+      {!isMobile && <IoIosAddCircleOutline id={pwaID} className='icon' size={27} />}
       {themeIcon}
-      <AiOutlineInfoCircle onClick={() => alert('TODO: show info')} className='icon' size={24} />
+      <AiOutlineInfoCircle onClick={() => alert('TODO: info section')} className='icon' size={24} />
     </div>
   );
 }
