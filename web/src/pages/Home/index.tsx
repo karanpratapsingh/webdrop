@@ -28,19 +28,25 @@ function Home(): React.ReactElement {
     console.log('ALL_PEERS', peers);
   }, []);
 
-  const onPeerJoined = useCallback((peer: PeerJoinedPayloadData): void => {
-    const updatedPeer = [...peers];
-    updatedPeer.push(peer);
-    console.log('PEER_JOINED peers', peers);
-    console.log('PEER_JOINED updatedPeer', updatedPeer);
-    setPeers(updatedPeer);
-  }, [peers]);
+  const onPeerJoined = useCallback(
+    (peer: PeerJoinedPayloadData): void => {
+      const updatedPeer = [...peers];
+      updatedPeer.push(peer);
+      console.log('PEER_JOINED peers', peers);
+      console.log('PEER_JOINED updatedPeer', updatedPeer);
+      setPeers(updatedPeer);
+    },
+    [peers]
+  );
 
-  const onPeerLeft = useCallback((peer: PeerLeftPayloadData): void => {
-    const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
-    console.log('PEER_LEFT', updatedPeer);
-    setPeers(updatedPeer);
-  }, [peers]);
+  const onPeerLeft = useCallback(
+    (peer: PeerLeftPayloadData): void => {
+      const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
+      console.log('PEER_LEFT', updatedPeer);
+      setPeers(updatedPeer);
+    },
+    [peers]
+  );
 
   const onCurrentPeer = useCallback((currentPeer: CurrentPeerPayloadData): void => {
     setCurrentPeer(currentPeer);
