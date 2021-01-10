@@ -2,20 +2,24 @@
 
 $iterationCount: infinite;
 
+.ripple {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 [class^='circle'] {
   height: 50vh;
   width: 50vh;
   border-radius: 50%;
   position: absolute;
-  bottom: -50%;
-  left: 50%;
+  margin: 0px auto;
+  left: 0;
+  right: 0;
   z-index: 0;
 
   -webkit-transition: height 0.25s ease, width 0.25s ease;
   transition: height 0.25s ease, width 0.25s ease;
-
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 [class^='circle']:before,
@@ -131,6 +135,5 @@ $iterationCount: infinite;
   [class^='circle'] {
     height: 20vh;
     width: 20vh;
-    bottom: -2vh;
   }
 }

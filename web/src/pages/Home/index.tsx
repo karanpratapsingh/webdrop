@@ -3,7 +3,8 @@ import Peer from 'peerjs';
 import React, { useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import Loader from 'react-loader-spinner';
-import { Details, Peers, Ripple, Options } from '../../components';
+import { useMediaPredicate } from 'react-media-hook';
+import { Details, Options, Peers } from '../../components';
 import {
   AllPeersPayloadData,
   CurrentPeerPayloadData,
@@ -15,7 +16,6 @@ import {
 import { Colors, Theme } from '../../theme';
 import { Connection } from '../../utils';
 import './Home.scss';
-import { useMediaPredicate } from 'react-media-hook';
 
 function Home(): React.ReactElement {
   const [currentPeer, setCurrentPeer] = useState<PeerInfo>();
@@ -68,7 +68,6 @@ function Home(): React.ReactElement {
         <Options theme={theme} onThemeUpdate={onThemeUpdate} />
         <Peers peers={peers} peer={peer} currentPeer={currentPeer} />
         <Details currentPeer={currentPeer} />
-        <Ripple />
       </React.Fragment>
     );
   }
