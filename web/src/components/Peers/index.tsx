@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react-hooks/exhaustive-deps */
 import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { memo, useCallback, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import { isChrome, isIOS } from 'react-device-detect';
 import { BsLaptop, BsPhone } from 'react-icons/bs';
@@ -39,7 +38,7 @@ function Peers(props: PeersProps): React.ReactElement {
   const { currentPeer, peer, peers } = props;
   const [progressInfo, setProgressInfo] = useState<ProgressInfo | null>(null);
   const [openSnackbar] = useNotification();
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onConnection = useCallback((connection: Peer.DataConnection) => {
     const chunks: Blob[] = [];
@@ -71,7 +70,7 @@ function Peers(props: PeersProps): React.ReactElement {
           break;
       }
     });
-  }, []);
+  }, [openSnackbar]);
 
   const onTransferComplete = (chunks: Blob[], fileInfo: FileInfo): void => {
     const fileDigester = new FileDigester(chunks, fileInfo);
@@ -90,7 +89,7 @@ function Peers(props: PeersProps): React.ReactElement {
 
   useEffect(() => {
     peer.on('connection', onConnection);
-  }, [onConnection]);
+  }, [peer, onConnection]);
 
   const onPeerClick = (): void => {
     fileInputRef.current?.click();

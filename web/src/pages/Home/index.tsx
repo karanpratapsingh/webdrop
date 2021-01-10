@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Peer from 'peerjs';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
 import Loader from 'react-loader-spinner';
 import { useMediaPredicate } from 'react-media-hook';
@@ -24,33 +23,37 @@ function Home(): React.ReactElement {
   const defaultTheme: Theme = useMediaPredicate('(prefers-color-scheme: dark)') ? Theme.DARK : Theme.LIGHT;
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
+  const onAllPeers = useCallback((peers: AllPeersPayloadData): void => {
+    setPeers(peers);
+    console.log('ALL_PEERS', peers);
+  }, []);
+
+  const onPeerJoined = useCallback((peer: PeerJoinedPayloadData): void => {
+    const updatedPeer = [...peers];
+    updatedPeer.push(peer);
+    console.log('PEER_JOINED peers', peers);
+    console.log('PEER_JOINED updatedPeer', updatedPeer);
+    setPeers(updatedPeer);
+  }, [peers]);
+
+  const onPeerLeft = useCallback((peer: PeerLeftPayloadData): void => {
+    const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
+    console.log('PEER_LEFT', updatedPeer);
+    setPeers(updatedPeer);
+  }, [peers]);
+
+  const onCurrentPeer = useCallback((currentPeer: CurrentPeerPayloadData): void => {
+    setCurrentPeer(currentPeer);
+    const peer = new Peer(currentPeer.id);
+    setPeer(peer);
+  }, []);
+
   useEffect(() => {
     Connection.on(PayloadType.CURRENT_PEER, onCurrentPeer);
     Connection.on(PayloadType.ALL_PEERS, onAllPeers);
     Connection.on(PayloadType.PEER_JOINED, onPeerJoined);
     Connection.on(PayloadType.PEER_LEFT, onPeerLeft);
-  }, []);
-
-  const onAllPeers = (peers: AllPeersPayloadData): void => {
-    setPeers(peers);
-  };
-
-  const onPeerJoined = (peer: PeerJoinedPayloadData): void => {
-    const updatedPeer = [...peers];
-    updatedPeer.push(peer);
-    setPeers(updatedPeer);
-  };
-
-  const onPeerLeft = (peer: PeerLeftPayloadData): void => {
-    const updatedPeer = [...peers].filter(({ id }) => id !== peer.id);
-    setPeers(updatedPeer);
-  };
-
-  const onCurrentPeer = (currentPeer: CurrentPeerPayloadData): void => {
-    setCurrentPeer(currentPeer);
-    const peer = new Peer(currentPeer.id);
-    setPeer(peer);
-  };
+  }, [onCurrentPeer, onAllPeers, onPeerJoined, onPeerLeft]);
 
   const onThemeUpdate = (theme: Theme): void => {
     setTheme(theme);
