@@ -1,13 +1,20 @@
 import React from 'react';
 import './Ripple.scss';
 
-function Ripple(): React.ReactElement {
+interface RippleProps {
+  children?: React.ReactNode;
+}
+
+function Ripple(props: RippleProps): React.ReactElement {
+  const { children } = props;
+
   return (
-    <React.Fragment>
+    <div className='ripple'>
+      {children}
       <div className='circle1'></div>
       <div className='circle2'></div>
       <div className='circle3'></div>
-    </React.Fragment>
+    </div>
   );
 }
 

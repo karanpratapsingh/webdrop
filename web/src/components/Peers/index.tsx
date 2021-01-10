@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react-hooks/exhaustive-deps */
 import FileSaver from 'file-saver';
 import Peer from 'peerjs';
 import React, { memo, useCallback, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import { isChrome, isIOS } from 'react-device-detect';
 import { BsLaptop, BsPhone } from 'react-icons/bs';
@@ -39,39 +38,42 @@ function Peers(props: PeersProps): React.ReactElement {
   const { currentPeer, peer, peers } = props;
   const [progressInfo, setProgressInfo] = useState<ProgressInfo | null>(null);
   const [openSnackbar] = useNotification();
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const onConnection = useCallback((connection: Peer.DataConnection) => {
-    const chunks: Blob[] = [];
-    connection.on('data', (data: FileTransferPayload) => {
-      switch (data.type) {
-        case FileTransferPayloadType.FILE_INFO:
-          openSnackbar(`Receiving ${data.fileInfo.name} from ${data.from.name}`);
-          break;
+  const onConnection = useCallback(
+    (connection: Peer.DataConnection) => {
+      const chunks: Blob[] = [];
+      connection.on('data', (data: FileTransferPayload) => {
+        switch (data.type) {
+          case FileTransferPayloadType.FILE_INFO:
+            openSnackbar(`Receiving ${data.fileInfo.name} from ${data.from.name}`);
+            break;
 
-        case FileTransferPayloadType.CHUNK_RECEIVED:
-          chunks.push(data.chunk);
-          break;
+          case FileTransferPayloadType.CHUNK_RECEIVED:
+            chunks.push(data.chunk);
+            break;
 
-        case FileTransferPayloadType.PROGRESS: {
-          const { from, progress } = data;
-          const progressInfo: ProgressInfo = {
-            id: from.id,
-            value: progress
-          };
-          setProgressInfo(progressInfo);
-          break;
+          case FileTransferPayloadType.PROGRESS: {
+            const { from, progress } = data;
+            const progressInfo: ProgressInfo = {
+              id: from.id,
+              value: progress
+            };
+            setProgressInfo(progressInfo);
+            break;
+          }
+          case FileTransferPayloadType.TRANSFER_COMPLETE:
+            openSnackbar('Transfer complete');
+            onTransferComplete(chunks, data.fileInfo);
+            break;
+
+          default:
+            break;
         }
-        case FileTransferPayloadType.TRANSFER_COMPLETE:
-          openSnackbar('Transfer complete');
-          onTransferComplete(chunks, data.fileInfo);
-          break;
-
-        default:
-          break;
-      }
-    });
-  }, []);
+      });
+    },
+    [openSnackbar]
+  );
 
   const onTransferComplete = (chunks: Blob[], fileInfo: FileInfo): void => {
     const fileDigester = new FileDigester(chunks, fileInfo);
@@ -90,7 +92,7 @@ function Peers(props: PeersProps): React.ReactElement {
 
   useEffect(() => {
     peer.on('connection', onConnection);
-  }, [onConnection]);
+  }, [peer, onConnection]);
 
   const onPeerClick = (): void => {
     fileInputRef.current?.click();
