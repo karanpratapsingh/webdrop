@@ -14,6 +14,7 @@ import {
 } from '../../generated/types';
 import { Colors, Theme } from '../../theme';
 import { Connection } from '../../utils';
+import { motion } from 'framer-motion';
 import './Home.scss';
 
 function Home(): React.ReactElement {
@@ -46,7 +47,7 @@ function Home(): React.ReactElement {
 
   const onCurrentPeer = useCallback((currentPeer: CurrentPeerPayloadData): void => {
     setCurrentPeer(currentPeer);
-    const peer = new Peer(currentPeer.id);
+    const peer = new Peer(currentPeer.id, { secure: true });
     setPeer(peer);
   }, []);
 
@@ -85,9 +86,17 @@ function Home(): React.ReactElement {
     );
   }
 
+  const animation = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5 }
+  };
+
   return (
     <Div100vh className={`theme--${theme} root`}>
-      <div className='home'>{content}</div>
+      <motion.div className='home' {...animation}>
+        {content}
+      </motion.div>
     </Div100vh>
   );
 }

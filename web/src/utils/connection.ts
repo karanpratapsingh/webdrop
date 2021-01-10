@@ -6,7 +6,7 @@ class IOClient {
   static instance: IOClient;
 
   private constructor() {
-    this.io = io(Config.endpoint, { path: Config.path });
+    this.io = io(Config.endpoint, { path: Config.path, secure: true });
   }
 
   static getInstance = (): IOClient => {

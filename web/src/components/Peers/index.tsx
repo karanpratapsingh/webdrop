@@ -22,6 +22,8 @@ import {
   TransferCompletePayload,
   useNotification
 } from '../../utils';
+import { motion } from 'framer-motion';
+
 import './Peers.scss';
 
 interface PeersProps {
@@ -86,6 +88,13 @@ function Peers(props: PeersProps): React.ReactElement {
     } else {
       FileSaver.saveAs(file, file.name);
     }
+    hideProgress();
+  };
+
+  const hideProgress = (): void => {
+    setTimeout(() => {
+      setProgressInfo(null);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -102,10 +111,14 @@ function Peers(props: PeersProps): React.ReactElement {
     if (!files || !files?.length) return;
 
     const file: File | null = files.item(0);
-    if (file) {
-      const connection: Peer.DataConnection = peer.connect(to.id);
-      connection.on('open', () => onPeerConnectionOpen(currentPeer, to, file, connection));
+
+    if (!file) {
+      openSnackbar('Error occurred while processing file');
+      return;
     }
+
+    const connection: Peer.DataConnection = peer.connect(to.id, { reliable: true });
+    connection.on('open', () => onPeerConnectionOpen(currentPeer, to, file, connection));
   };
 
   const onPeerConnectionOpen = (from: PeerInfo, to: PeerInfo, file: File, connection: Peer.DataConnection): void => {
@@ -146,6 +159,7 @@ function Peers(props: PeersProps): React.ReactElement {
       };
       connection.send(payload);
       openSnackbar('Transfer complete');
+      hideProgress();
     };
 
     const chunker = new FileChunker(file, onChunk, onProgress, onComplete);
@@ -188,19 +202,25 @@ function Peers(props: PeersProps): React.ReactElement {
   let content: React.ReactNode = <span>Open Webdrop on other devices to send files</span>;
 
   if (hasPeers) {
+    const animation = {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      transition: { duration: 0.5 }
+    };
+
     content = (
       <div className='peers-content'>
         <span className='heading'>Click to send a file</span>
         <div className='peer-list'>
           {peers.map((peer: PeerInfo, index: number) => (
-            <div key={index} className='peer-card' onClick={onPeerClick}>
+            <motion.div key={index} className='peer-card' onClick={onPeerClick} {...animation}>
               {getIcon(peer.id, peer.mobile)}
               <input ref={fileInputRef} hidden type='file' onChange={event => onFileSelect(event, peer)} />
               <span className='name'>{peer.name}</span>
               <span className='info'>
                 {peer.os} {peer.browser}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
