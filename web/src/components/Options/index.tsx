@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
-import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { FaMoon } from 'react-icons/fa';
-import { IoIosAddCircleOutline, IoIosSunny } from 'react-icons/io';
+import { IoIosAddCircleOutline, IoIosSunny, IoLogoGithub } from 'react-icons/io';
+import Config from '../../config';
 import './Options.scss';
 
 interface Props {
@@ -37,6 +37,10 @@ function Options(props: Props): React.ReactElement {
     };
   }, []);
 
+  const openGithub = (): void => {
+    window.open(Config.github, '_blank');
+  };
+
   let themeIcon: React.ReactNode = <IoIosSunny className='icon' onClick={toggleTheme} size={30} />;
 
   if (darkMode) {
@@ -47,7 +51,7 @@ function Options(props: Props): React.ReactElement {
     <div className='options'>
       {!isMobile && <IoIosAddCircleOutline id={pwaID} className='icon' size={27} />}
       {themeIcon}
-      <AiOutlineInfoCircle onClick={() => alert('TODO: info section')} className='icon' size={24} />
+      <IoLogoGithub className='icon' size={24} onClick={openGithub} />
     </div>
   );
 }

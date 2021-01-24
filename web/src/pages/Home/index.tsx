@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Peer from 'peerjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import Div100vh from 'react-div-100vh';
@@ -14,7 +15,6 @@ import {
 } from '../../generated/types';
 import { Colors, Theme } from '../../theme';
 import { Connection } from '../../utils';
-import { motion } from 'framer-motion';
 import './Home.scss';
 
 function Home(): React.ReactElement {
