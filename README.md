@@ -2,7 +2,7 @@
   <a href="https://webdrop.karanpratapsingh.com">
     <img width="100px" src="https://user-images.githubusercontent.com/29705703/105630710-b91d8600-5e70-11eb-93b9-bdd347993cdc.png">
   </a>
-  <h1 align="center">Webdrop</h1>
+  <h1 align="center"><a href="https://webdrop.karanpratapsingh.com">Webdrop</a></h1>
     <p align="center">
  Share files with people nearby instantly and securely. Open Source and Peer2Peer. (React + TypeScript port of <a href="https://github.com/RobinLinus/snapdrop">Snapdrop</a>)
   </p>
@@ -50,6 +50,8 @@ Feel free to open a new issue if you're facing any problem 🙋
 ### 💻 Deployment
 
 Checkout the Github action `.github/workflows/aws.yml` which builds the docker images and push them to [AWS ECR](https://aws.amazon.com/ecr/) which then gets deployed to [AWS ECS](https://aws.amazon.com/ecs/) service.
+
+Currently deployed at https://webdrop.karanpratapsingh.com
 
 ### 👏 How to Contribute
 
