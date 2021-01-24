@@ -17,6 +17,8 @@
 
 ### 🏃 Getting Started
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3bc310368cfc40dba2cd03830c8063a2)](https://app.codacy.com/gh/karanpratapsingh/webdrop?utm_source=github.com&utm_medium=referral&utm_content=karanpratapsingh/webdrop&utm_campaign=Badge_Grade_Settings)
+
 **Setting up environment variables**
 
 Before getting started, create a `.env` file following the `.env.template`. 
